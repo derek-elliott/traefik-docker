@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik:1.4.3
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    expose:
+      - "8080"
+    networks:
+      - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/traefik/traefik.toml:/traefik.toml
+      - /opt/traefik/acme.json:/acme.json
+    container_name: traefik
+    labels:
+      - "traefik.frontend.rule=Host:${TRAEFIK_MONITOR_HOST}"
+      - "traefik.port=8080"
+      - "traefik.enable=true"
+
+networks:
+  web:
+    external: true

@@ -1,0 +1,35 @@
+debug = false
+checkNewVersion = true
+logLevel = "ERROR"
+defaultEntryPoints = ["https", "http"]
+
+[entryPoints]
+        [entryPoints.http]
+        address = ":80"
+                [entryPoints.http.redirect]
+                entryPoint = "https"
+        [entryPoints.https]
+        address = ":443"
+        [entryPoints.https.tls]
+
+[retry]
+
+[web]
+address = ":8080"
+        [web.auth.basic]
+        usersFile = "./.htpasswd"
+[web.statistics]
+recentErrors = 10
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "derekelliott.me"
+watch = true
+exposedbydefault = false
+
+[acme]
+email = "saywhat1@gmail.com"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+onDemand = false

@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  notebook:
+    image: saywhat1/jupyterlab-datascience:1.0
+    command: start.sh jupyter lab --NotebookApp.password='${JPY_NOTEBOOK_PASS}'
+    volumes:
+      - "jupyter-work:/home/jovyan/work"
+    restart: always
+    networks:
+      - web
+      - default
+    expose:
+      - "8888"
+    labels:
+      - "traefik.backend=jupyterlab-notebook"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:${JPY_HOST_NAME}"
+      - "traefik.enable=true"
+      - "traefik.port=8888"
+      - "traefik.default.protocol=http"
+
+volumes:
+  jupyter-work:
+
+networks:
+  web:
+    external: true
